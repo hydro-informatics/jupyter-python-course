@@ -1,0 +1,47 @@
+{
+	"RIVER": {
+		"NAME": "Vanilla Flow",
+		"GEOMETRY": {
+			"REGIONS": [
+				{
+				  "type": "wet",
+				  "name": "riverbed"
+				},
+				{
+				  "type": "dry",
+				  "name": "floodplain"
+				}
+			],
+			"FLOWBOUNDARIES": [
+				{
+				  "name": "Inflow",
+				  "nodes": [1, 3, 7, 31]
+				},
+				{
+				  "name": "Outflow",
+				  "nodes": [89, 90, 76, 69, 95]
+				}
+			]
+		},
+		"HYDRAULICS": {
+			"BOUNDARY": [
+				{
+					"discharge_file": "/simulation/directory/Inflow.txt",
+					"name": "Inflow",
+					"slope": 0.005,
+					"type": "hydrograph"
+				},
+				{
+					"name": "Outflow",
+					"type": "zero_gradient"
+				}
+			],
+			"FRICTION": {
+				"cobble": 20.0,
+				"gravel": 26.0,
+				"sand": 41
+			}
+		},
+		"LOCATION": [48.744079, 9.103928]
+	}
+}
