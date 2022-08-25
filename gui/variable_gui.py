@@ -23,7 +23,7 @@ class MyApp(tk.Frame):
 
         # define tk.StringVar() and assign it to an entry
         self.user_entry = tk.StringVar()
-        self.an_entry = tk.Entry(master, width=20, variable=self.user_entry)
+        self.an_entry = tk.Entry(master, width=20, textvariable=self.user_entry)
         self.an_entry.grid(column=1, row=0, padx=5, pady=5)
 
         # define Button to trigger call back
@@ -37,7 +37,7 @@ class MyApp(tk.Frame):
         self.cbutton.grid(sticky=tk.E, column=0, columnspan=3, row=1, padx=5, pady=5)
 
     def message_distributor(self):
-        if self.check_variable.get():
+        if not self.check_variable.get():
             showinfo("User message", self.user_entry.get())
         else:
             showinfo("Random message", self.random_message())
