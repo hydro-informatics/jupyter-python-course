@@ -1,4 +1,4 @@
-from raster_mgmt import *
+from flusstools.geotools.raster_mgmt import *
 # make sure to use exceptions
 gdal.UseExceptions()
 
