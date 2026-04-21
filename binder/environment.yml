@@ -1,0 +1,44 @@
+name: hy-jupyter
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  - python=3.11
+
+  # Jupyter runtime
+  - ipykernel
+  - ipywidgets
+
+  # Core scientific stack
+  - numpy
+  - pandas
+  - matplotlib
+  - scipy
+
+  # Machine learning
+  # Note: plot_confusion_matrix was removed in scikit-learn 1.2.
+  # extra-svc.ipynb needs updating to ConfusionMatrixDisplay if scikit-learn >= 1.2 is used.
+  - scikit-learn<1.2
+
+  # Geospatial
+  - gdal
+  - geopandas
+  - rasterio
+  - fiona
+  - shapely
+  - pyproj
+  - rasterstats
+  - scikit-image      # skimage.graph used in geo02-raster
+
+  # Visualisation extras
+  - plotly
+  - cmocean
+
+  # File I/O
+  - openpyxl
+
+  # pip-only packages
+  - pip
+  - pip:
+    - flusstools
