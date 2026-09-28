@@ -3,9 +3,11 @@
 Ce fichier contient tout le code technique de l'exercice : lecture des
 résultats HEC-RAS, formule de Meyer-Peter & Müller (1948), contrôle des
 réponses et figures. Il n'est pas nécessaire de le lire pour faire
-l'exercice ; le notebook l'importe avec ``import charriage as ch``.
+l'exercice ; le notebook l'importe avec ``import charriage as ch``
+(ou ``from fun import charriage as ch`` dans jupyter-python-course).
 
-Fichiers nécessaires dans le même dossier :
+Fichiers nécessaires, dans le même dossier ou selon la structure de
+jupyter-python-course (fun/charriage.py et data/hecras-arbogne.csv) :
     charriage.py          ce script
     hecras-arbogne.csv    16 profils HEC-RAS 1D de l'Arbogne, Q = 25 m3/s
 """
@@ -23,6 +25,10 @@ S = RHO_S / RHO_W # densité relative [-]
 NU = 1e-6         # viscosité cinématique de l'eau [m2/s]
 
 DOSSIER = Path(__file__).resolve().parent
+# CSV à côté du script, sinon dans ../data/ (structure de jupyter-python-course)
+HECRAS = next((p for p in (DOSSIER / "hecras-arbogne.csv",
+                           DOSSIER.parent / "data" / "hecras-arbogne.csv")
+               if p.exists()), DOSSIER / "hecras-arbogne.csv")
 
 # Palette du cours (hydro-informatics.com) pour axes et textes ; les scénarios
 # gardent les couleurs Okabe-Ito de la présentation (lisibles par les daltoniens).
@@ -50,7 +56,7 @@ plt.rcParams.update({
 
 
 # ---------------------------------------------------------------- données ---
-def lire_hecras(fichier=DOSSIER / "hecras-arbogne.csv"):
+def lire_hecras(fichier=HECRAS):
     """Résultats HEC-RAS des 16 profils (Q = 25 m3/s), de l'amont vers l'aval."""
     return pd.read_csv(fichier).sort_values("profil").reset_index(drop=True)
 
