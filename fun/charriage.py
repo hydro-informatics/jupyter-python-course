@@ -75,12 +75,14 @@ def _complet(*valeurs):
 
 
 def _granulometrie(melanges):
-    """{nom: {"d_m": .., "d_84": ..}} en mètres, à partir de [nom, d_m, d_84] en mm.
+    """{nom: {"d_m": .., "d_84": .., "d_90": ..}} en mètres, à partir de [nom, d_m, d_84, d_90] en mm.
 
-    d_84 n'est nécessaire que pour le lit (le dernier mélange de la liste)."""
+    d_84 et d_90 ne sont nécessaires que pour le lit (le dernier mélange de la liste)."""
     if not all(_complet(*m[1:]) for m in melanges):
         raise ValueError("Tâche 1 : complétez d'abord les diamètres de la liste « melanges ».")
-    return {m[0]: {k: float(v) / 1000.0 for k, v in zip(("d_m", "d_84"), m[1:])}
+    if len(melanges[-1]) < 4:
+        raise ValueError("Tâche 1 : le lit (dernier mélange) demande d_m, d_84 et d_90.")
+    return {m[0]: {k: float(v) / 1000.0 for k, v in zip(("d_m", "d_84", "d_90"), m[1:])}
             for m in melanges}
 
 
@@ -90,9 +92,10 @@ def _verifier_k_st(k_st):
 
 
 def rugosite_grain(melanges):
-    """k_r = 26 / d_84^(1/6) avec d_84 [m] du lit, soit le dernier mélange de la liste."""
-    d84_lit = list(_granulometrie(melanges).values())[-1]["d_84"]
-    return 26.0 / d84_lit ** (1 / 6)
+    """k_r = 26 / d_90^(1/6) avec d_90 [m] du lit, soit le dernier mélange de la liste
+    (Meyer-Peter & Müller 1948, éq. 25)."""
+    d90_lit = list(_granulometrie(melanges).values())[-1]["d_90"]
+    return 26.0 / d90_lit ** (1 / 6)
 
 
 # -------------------------------------------------------------------- MPM ---
@@ -192,7 +195,8 @@ def verifier(melanges, k_st, rapport_rugosite, k_st_critique, tol=0.02):
         ligne("Tâche 1  d_m du sable [mm]", gr[0]["d_m"] * 1000, 0.23)
         ligne("Tâche 1  d_m du gravier [mm]", gr[-1]["d_m"] * 1000, 8.88)
         ligne("Tâche 1  d_84 du gravier [mm]", gr[-1]["d_84"] * 1000, 13.56)
-        ligne("         k_r = 26 / d_84^(1/6) [m^(1/3)/s]", rugosite_grain(melanges), 53.2)
+        ligne("Tâche 1  d_90 du gravier [mm]", gr[-1]["d_90"] * 1000, 23.06)
+        ligne("         k_r = 26 / d_90^(1/6) [m^(1/3)/s]", rugosite_grain(melanges), 48.7)
     except ValueError:
         ligne("Tâche 1  diamètres caractéristiques", None, 0)
     if _complet(k_st):
@@ -200,8 +204,8 @@ def verifier(melanges, k_st, rapport_rugosite, k_st_critique, tol=0.02):
         ligne("Tâche 1  k_st avec végétation", k_st[-1], 10)
     else:
         ligne("Tâche 1  k_st", None, 0)
-    ligne("Tâche 2  rapport_rugosite(42, 53.2)", rapport_rugosite(42, 53.2), 0.70147)
-    ligne("Tâche 3  k_st_critique(0.05, 53.2, 0.047)", k_st_critique(0.05, 53.2, 0.047), 51.05)
+    ligne("Tâche 2  rapport_rugosite(42, 48.7)", rapport_rugosite(42, 48.7), 0.80090)
+    ligne("Tâche 3  k_st_critique(0.05, 48.7, 0.047)", k_st_critique(0.05, 48.7, 0.047), 46.732)
 
 
 # ---------------------------------------------------------------- figures ---
