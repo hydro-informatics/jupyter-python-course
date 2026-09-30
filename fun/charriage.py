@@ -201,7 +201,7 @@ def verifier(melanges, k_st, rapport_rugosite, k_st_critique, tol=0.02):
         ligne("Tâche 1  diamètres caractéristiques", None, 0)
     if _complet(k_st):
         ligne("Tâche 1  k_st sans végétation", k_st[0], 42)
-        ligne("Tâche 1  k_st avec végétation", k_st[-1], 10)
+        ligne("Tâche 1  k_st avec végétation", k_st[-1], 8)
     else:
         ligne("Tâche 1  k_st", None, 0)
     ligne("Tâche 2  rapport_rugosite(42, 48.7)", rapport_rugosite(42, 48.7), 0.80090)
